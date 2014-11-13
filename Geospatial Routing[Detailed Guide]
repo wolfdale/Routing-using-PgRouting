@@ -19,132 +19,75 @@ QGIS provide a ‘DB Manager’ plug-in which manage the database within QGIS.
 --->>>>>>>>>Establishing a Connection
 A connection needs to be established between QGIS and PostgreSQL. It is to be noted the connection needs to be established only for first time after that DB Manager makes a registry for that connection. Thus we only need to provide the credentials for logging into the Geospatial database next time.
 
- (For First Time Only):
- 
+(For First Time Only):
 Click LAYERS in QGIS working space and select ADD POSTGIS LAYERS.
-
 Create a new connection here Road Network is created as a new connection.
-
-
- 
-Figure 6. 5 Creating a new connection
 Click [connect] which will bring all the schemas from the database at the backend.
 
- 
-Figure 6. 6 Connect the newly created connection
-
 Now fire up the DB Manager plug-In which will automatically include the new connection in its registry.
-
- 
-Figure 6. 7 New Connections in DB Manager
-
 Establishing Connection
 Steps:
 •	Open DB Manager
 •	Select PostGIS>postgres on left hand side
 •	Enter the Credentials to establish a connection 
-
- 
-Figure 6. 8 Establishing Connection
 The connection between QGIS and PostgreSQL must be established before importing a shapefile. Import layer/file option is used to import shapefile into QGIS.
-
-NOTE: Here Separate Schema ‘network’ is used
-
-  
-Figure 6. 9Importing ShapeFile
 The Imported Shapefile in DB Manager Plug-In
+Display The Imported Shapefile on QGIS Canvas
 
  
-Figure 6. 10 Imported Shapefile in DB Manager
-The Imported Shapefile on QGIS Canvas
+ --->>>>>>>>>Applying PgRouting Functions
 
- 
-Figure 6. 11 QGIS Canvas View of imported shapefile
+(Optional Steps)
 
-6.3 Applying PgRouting Functions
- 
-Note: The above shapefile is not noded for routing purposes thus pgr_nodenetwork needs to be implemented to make the shapefile noded. Geometry which is in MultiLIneString needs to be converted into linestring for pgr_nodenetwork function to be implemented.
+Note: The shapefile is not noded for routing purposes thus pgr_nodenetwork needs to be implemented to make the shapefile noded. 
+Geometry which is in MultiLIneString needs to be converted into linestring for pgr_nodenetwork function to be implemented.
 If the shapefile is made for routing proposes we can directly create topology without using the pgr_nodenetwork. 
 
 Converting Multilinestring Geometry to LineString Geometry
-
 The PostGIS function ST_Dump(geom) is used to convert the multilinestring to linearstring. Here the Parameter geom is in multlinestring.
-
 A new table have to be created in which the Geometry is in linestring.
 
-
-
-
 Creating a new table using PostgreSQL
-
 Creating a new table named ind_roads_linestring with id and geom as its columns
-
- 
-Figure 6. 12 Table ind_roads_linestring
-
 Now Using SQL Query we will populate the id and geometry column in the new table ind_road_linestring.
+
 SQL Query
 
 INSERT INTO network.ind_roads_linestring(id, geom)
 SELECT id, (ST_Dump(geom)) .geom
 FROM network.ind_road;
-
- 
-Figure 6. 13 Populating geom Linestring column
-
-
-
-
 Updated table in DdManager (Linestring Geometry) 
 
  
-Figure 6. 14 ind_roads_linestring in DB Manager
-Applying pgr_nodeNetwork 
+--->>>>>>>Applying pgr_nodeNetwork 
 
-A common problem associated with bringing GIS data into PgRouting is the fact that the data is often not “noded” correctly. This will create invalid topologies, which will result in routes that are incorrect.
-This function reads the ind_roads_linestring table, that has a primary key column id and geometry column named geom and intersect all the segments in it against all the other segments and then creates a table Ind_roads-linestring_noded. It uses the tolerance for deciding that multiple nodes within the tolerance are considered the same node.
-
+A common problem associated with bringing GIS data into PgRouting is the fact that the data is often not “noded” correctly.
+This will create invalid topologies, which will result in routes that are incorrect.
+This function reads the ind_roads_linestring table, that has a primary key column id and geometry column named geom and 
+intersect all the segments in it against all the other segments and then creates a table Ind_roads-linestring_noded.
+It uses the tolerance for deciding that multiple nodes within the tolerance are considered the same node.
 This function automatically creates the Source and Target Colums.
 
- 
-Figure 6. 15 Applying NodeNetwork Functio
- 
-Figure 6. 16 ind_roads_linestrind_noded table in the DB Manager
+
 NOTE: For already noded shapefile manually create the Source and Target Columns using 
+
 SQL Query (Here roads shapefile is already noded)
+
 Alter table network.roads add column source integer
-
- 
-Figure6. 17 Query noded shapefile
-
 Alter table network.roads add column target integer
 
  
-Figure 6. 18 Query noded shapefile
-Applying pgr_Createtopology Function
+
+--->>>>>>>>Applying pgr_Createtopology Function
+
 	Builds a network topology based on the geometry information. 
 	This function populates the Source and Target of each road segment in the database in appropriate column.
 	Basically it create vertices on road network which can be used for routing purposes
 
- 
-Figure 6. 19 Createtopology Function
- 
-Figure 6.20 Populated source and target Columns ind_roads_linestring_noded table
- 
-Figure 6. 21 vertex table (ind_roads_linestring_noded_vertices_pgr) is created by the createtoplogy function
-
- 
-Figure 6. 22 Vertices pgr table with ind_road on QGIS canvas  
 
 Results of pgr_createTopology() function is reflected in database at backend.
 
- 
-Figure 6. 23 Results reflected on Database at backend
-
-
-
-
-6.4 Applying pgr_dijkstra for Calculating Shortest path
+--->>>>>>>>>Applying pgr_dijkstra for Calculating Shortest path
 
 SQL Query for determining the shortest path between two nodes in the road network.
    
@@ -160,30 +103,15 @@ SELECT seq, id1 AS node, id2 AS edge, cost,geom
   ON di.id2 = pt.id
 
  NOTE
-	Here we are using JOIN to join the original network.ind_roads_linestring_noded table to the results of pgr_dijkstra result so that results can be visualized on the canvas.
-	We need to type cast our parameters as the data type created automatically by the node network function doesn’t match with the pgr_dijkstra query
-
- 
-Figure 6. 24 Data Type created by Node Network Function
+	Here we are using JOIN to join the original network.ind_roads_linestring_noded table to the results of pgr_dijkstra result
+  so that results can be visualized on the canvas.
+	We need to type cast our parameters as the data type created automatically by the node network function doesn’t match with
+  the pgr_dijkstra query
 
 The Node Id’s are selected from the QGIS canvas using Identify Features. 
-
- 
-Figure 6. 25 SQL Query for Dijkstra Algorithm
-
-
-
-
 Results of SQL query is returned & finally is loaded into new layer called ‘query’. 
  
-Figure 6. 26 Results of Query
-
-Superimposed Results of Dijkstra Shortest path algorithm
-
- 
-Figure 6. 27 Super Imposed Results
-
-6.5 Applying pgr_bidijkstra for Calculating Shortest path
+--->>>>>>>>>Applying pgr_bidijkstra for Calculating Shortest path
 
 Bi-directional Dijkstra
 This is a bi-directional Dijkstra search algorithm. It searches from the source toward the destination and at the same time from the destination to the source and terminates where these two searches meet in the middle. 
