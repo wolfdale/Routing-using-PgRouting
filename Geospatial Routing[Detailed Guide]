@@ -117,30 +117,8 @@ Bi-directional Dijkstra
 This is a bi-directional Dijkstra search algorithm. It searches from the source toward the destination and at the same time from the destination to the source and terminates where these two searches meet in the middle. 
 
 NOTE
-	Here we are using JOIN to join the original network.ind_roads_linestring_noded table to the results of pgr_dijkstra result so that results can be visualized on the canvas.
-	We need to type cast our parameters as the data type created automatically by the node network function doesn’t match with the pgr_dijkstra query.
- 
-Figure 6. 28 Data Type created by Node Network Function
-
- 
-Figure 6. 29 SQL Query for Bidirectional Dijkstra Algorithm
-
-
- 
-Figure 6. 30 Results of Bidirectional Dijkstra
-
-
-
-
- 
-Figure 6. 31 Super Imposed Results
-
-6.6 Visualizing Results of both algorithms on QGIS canvas
-
-Superimposed Results of Dijkstra and Bi-directional Dijkstra 
-
-
-
- 
-Figure 6. 32 Dijkstra and Bi-Directional Dijkstra
+	Here we are using JOIN to join the original network.ind_roads_linestring_noded table to the results of pgr_dijkstra
+  result so that results can be visualized on the canvas.
+	We need to type cast our parameters as the data type created automatically by the node network function doesn’t match
+  with the pgr_dijkstra query.
 
