@@ -1,4 +1,5 @@
-## Query 
+## Again this Query is modified accoring to my need to handle unnoded shapefiles.
+## Refer to PgRouting Docs For simple version to this Query
 
 
 
