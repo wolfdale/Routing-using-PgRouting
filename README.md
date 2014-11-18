@@ -4,10 +4,10 @@ The project explores one of the famous problems in the mathematical disciplines 
 The project also explores the various plug-in in QGIS software Environment which includes DB Manager, SPIT & Road Graph Plug-In. 
 ### Software Configuration
        
-•	##PostgreSQL## (9.3.4 Stable): It is an object-relational database management system (ORDBMS) acting as backend in this                                        project.
-•	##QGIS (2.0.1. Stable): It is a cross-platform free and open source desktop geographic information system (GIS) application that provides data viewing, editing, and analysis capabilities.
-•	##PostGIS (2.1 Stable): It provides spatial objects for the PostgreSQL database, allowing storage and query of information about location and mapping.
-•	##PgRouting (2.0 Stable): It extends the PostGIS  geospatial database to provide geospatial routing functionality & Network Analysis
+•	PostgreSQL(9.3.4 Stable): It is an object-relational database management system (ORDBMS) acting as backend in this                                        project.
+•	QGIS (2.0.1. Stable): It is a cross-platform free and open source desktop geographic information system (GIS) application that provides data viewing, editing, and analysis capabilities.
+•	ostGIS (2.1 Stable): It provides spatial objects for the PostgreSQL database, allowing storage and query of information about location and mapping.
+•	PgRouting (2.0 Stable): It extends the PostGIS  geospatial database to provide geospatial routing functionality & Network Analysis
 
 
 
