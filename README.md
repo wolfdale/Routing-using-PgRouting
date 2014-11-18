@@ -13,4 +13,4 @@ The project also explores the various plug-in in QGIS software Environment which
 
 
 #### IMPORTANT NOTES ####
-*The Detailed Guide in this repo explains how to set up the PostgreSQL,QGIS Environments & PgRouting And PostGIS packages.
+*The Detailed Guide in this repo explains how to set up the PostgreSQL,QGIS Environments also PgRouting And PostGIS packages.
