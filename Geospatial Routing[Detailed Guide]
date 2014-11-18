@@ -1,23 +1,24 @@
-Network Analysis on Geospatial Data (shapefile)
-
-Network analysis on Geospatial data in shapefile(.shp) format.
+Network [Routing] Analysis on Geospatial Data (shapefile)
 
 --->>>>>>>>Setting Up Geospatial Database
 
 The Database is created using the PostgreSQL
-Extending our Database for Geospatial Capabilities
+Extending our Database for Geospatial Capabilities with PostGIS & Routing Capabilities with PgRouting.
+
+Add Postgis Extension
 The PostGIS extension provides spatial objects for the PostgreSQL database and extends database for geospatial capabilities.
 
 Add Pgrouting Extension
-
 The pgrouting Extension extends the PostGIS geospatial database to provide geospatial routing functionality.
 
- --->>>>>>>>Setting up QGIS’s Plug-In (DB Manager)
+--->>>>>>>>Setting up QGIS’s Plug-In (DB Manager)
 
 QGIS provide a ‘DB Manager’ plug-in which manage the database within QGIS.
 
 --->>>>>>>>>Establishing a Connection
-A connection needs to be established between QGIS and PostgreSQL. It is to be noted the connection needs to be established only for first time after that DB Manager makes a registry for that connection. Thus we only need to provide the credentials for logging into the Geospatial database next time.
+A connection needs to be established between QGIS and PostgreSQL. It is to be noted the connection needs to be established 
+only for first time after that DB Manager makes a registry for that connection. Thus we only need to provide the credentials
+for logging into the Geospatial database next time.
 
 (For First Time Only):
 Click LAYERS in QGIS working space and select ADD POSTGIS LAYERS.
@@ -30,16 +31,17 @@ Steps:
 •	Open DB Manager
 •	Select PostGIS>postgres on left hand side
 •	Enter the Credentials to establish a connection 
-The connection between QGIS and PostgreSQL must be established before importing a shapefile. Import layer/file option is used to import shapefile into QGIS.
-The Imported Shapefile in DB Manager Plug-In
-Display The Imported Shapefile on QGIS Canvas
+The connection between QGIS and PostgreSQL must be established before importing a shapefile. Import layer/file option is
+used to import shapefile into QGIS.
+
+Display The Imported Shapefile on QGIS Canvas [Just To Check Everything is Fine]
 
  
- --->>>>>>>>>Applying PgRouting Functions
+ --->>>>>>>>Applying PgRouting Functions
 
 (Optional Steps)
 
-Note: The shapefile is not noded for routing purposes thus pgr_nodenetwork needs to be implemented to make the shapefile noded. 
+Note: The shapefile is not noded for routing purposes thus pgr_nodenetwork needs to be implemented to make the shapefile noded.
 Geometry which is in MultiLIneString needs to be converted into linestring for pgr_nodenetwork function to be implemented.
 If the shapefile is made for routing proposes we can directly create topology without using the pgr_nodenetwork. 
 
